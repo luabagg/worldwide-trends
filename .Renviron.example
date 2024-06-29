@@ -1,0 +1,3 @@
+GCLOUD_PROJECT_ID="Your-Google-Cloud-Project-ID"
+GCLOUD_PROJECT="bigquery-public-data"
+GCLOUD_DATASET="google_trends"

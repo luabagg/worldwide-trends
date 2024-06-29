@@ -1,0 +1,7 @@
+bigrquery
+DBI
+devtools
+dotenv
+dplyr
+lubridate
+stringr
