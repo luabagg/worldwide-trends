@@ -3,5 +3,7 @@ DBI
 devtools
 dotenv
 dplyr
+httr
 lubridate
+rjson
 stringr

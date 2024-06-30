@@ -1,7 +1,7 @@
-#' Trends Classification
+#' Worldwide Trends
 #'
 #' This script is responsible for querying Google BigQuery
-#' service and doing the dataset analisys.
+#' service and downloading / converting the datasets.
 #'
 #' ----- ----- ----- ----- :) ----- ----- ----- -----
 
@@ -14,10 +14,12 @@ dotenv::load_dot_env(".Renviron")
 project_id <- Sys.getenv("GCLOUD_PROJECT_ID")
 project_name <- Sys.getenv("GCLOUD_PROJECT")
 dataset_name <- Sys.getenv("GCLOUD_DATASET")
+daily_top_terms_csv <- daily_top_terms_filename()
 
 print_m(
   sprintf("Your project ID: %s", project_id),
-  sprintf("Your dataset: %s.%s", project_name, dataset_name)
+  sprintf("Your dataset: %s.%s", project_name, dataset_name),
+  sprintf("The output file: %s", daily_top_terms_csv)
 )
 
 # Connects to the BigQuery using the configured project ID.
@@ -25,6 +27,17 @@ con <- get_bq_connection(project_id, project_name, dataset_name)
 
 library(dplyr)
 
+#' get_daily_top_terms returns the top terms
+#' of each day, grouped by contry.
+#'
+#' warning: the given df must have the following columns:
+#' - country_name
+#' - refresh_date
+#' - term
+#' - rank
+#'
+#' @param table the table @see get_table.
+#' @param output the filename to output the info.
 get_daily_top_terms <- function(df) {
   # Top terms dataset (US and Worldwide):
   #
@@ -56,7 +69,7 @@ get_daily_top_terms <- function(df) {
 #
 
 top_terms_complete_csv <- "out/top-terms-complete.csv"
-if (!file.exists(top_terms_csv)) {
+if (!file.exists(top_terms_complete_csv)) {
   # If file doesn't exists, query the defined dataset and create csv.
   write_complete_csv(
     get_table(con, "international_top_terms"),
@@ -111,9 +124,13 @@ daily_top_terms <- merge(
 daily_top_terms |>
   as.data.frame() |>
   sample_n(10) |>
-  tibble::view(title = "Top Terms Analysis Sample")
+  tibble::view(title = "Top Terms Sample")
 
-daily_top_terms_csv <- "out/daily-top-terms.csv"
+print_m(
+  sprintf("Writing to output %s...", daily_top_terms_csv)
+)
+
 daily_top_terms |> utils::write.table(
-  daily_top_terms_csv, sep = ","
+  daily_top_terms_csv,
+  sep = ","
 )

@@ -50,6 +50,3 @@ rsconnect/
 
 # VSCode folder
 .vscode
-
-# output folder
-/out

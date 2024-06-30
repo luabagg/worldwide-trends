@@ -1,3 +1,6 @@
 GCLOUD_PROJECT_ID="Your-Google-Cloud-Project-ID"
 GCLOUD_PROJECT="bigquery-public-data"
 GCLOUD_DATASET="google_trends"
+OPENAI_API_KEY="Your-OpenAI-API-Key"
+DAILY_TOP_TERMS_FILE="out/daily-top-terms.csv"
+CLASSIFIED_TERMS_FILE="out/classified-terms.csv"
