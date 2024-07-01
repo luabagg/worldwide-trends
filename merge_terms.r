@@ -32,6 +32,9 @@ classified_terms <- read.csv(classified_terms_csv)
 # Merging dataframes
 #
 
+library(dplyr)
+library(stringr)
+
 output <- "out/daily-top-terms-classified.csv"
 print_m(
   sprintf("Merging dataframes to output %s...", output)
@@ -43,10 +46,18 @@ complete_terms <- merge(
   by = c("term", "country"),
   all.x = TRUE
 ) |>
-  dplyr::arrange(
+  group_by(
+    country, term, day, rank, repetitions
+  ) |>
+  summarise(
+    topic = first(topic)
+  ) |>
+  arrange(
     country, day, rank
   ) |>
   utils::write.table(
     output,
     sep = ","
   )
+
+print_m("All done!")

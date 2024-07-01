@@ -236,6 +236,18 @@ for (tt in tt_subsets) {
   it <- it + 1
 }
 
+# Add row names and removes trailing whitespace.
+classified_terms |>
+  mutate(
+    across(
+      where(is.character), str_trim
+    )
+  ) |>
+  utils::write.table(
+    classified_terms_csv,
+    sep = ","
+  )
+
 print_m(
   sprintf("Analysis completed, time spent: %s seconds", round(Sys.time() - start_time)),
   sprintf("Output available at %s", classified_terms_csv)
