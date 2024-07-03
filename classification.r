@@ -92,7 +92,7 @@ classify <- function(trending_terms, topics) {
 
   prompt <- paste(
     "
-    Below, you will be presented a list of topics and a JSON of trending terms.
+    Below, you will be presented with a list of topics and a JSON of trending terms.
     The topics are delimited with '### Topics' and the trending terms are delimited with '### Terms'.
     The trending terms are from Google Trends and are grouped by countries,
     with the following format: [{`term_name`: term, `country_name`: country}, ...]).
@@ -143,7 +143,7 @@ classify <- function(trending_terms, topics) {
   )
 
   classified_terms <- data.frame(term = character(), country = character(), topic = character())
-  for (topic in names(assistant_msg)){
+  for (topic in names(assistant_msg)) {
     rows <- assistant_msg[[topic]]
     for (row in rows) {
       classified_terms <- classified_terms |>
@@ -160,11 +160,11 @@ classify <- function(trending_terms, topics) {
   return(classified_terms)
 }
 
-#'exec_classification executes the classify function with fallback.
+#' exec_classification executes the classify function with fallback.
 #'
 #' @param trending_terms dataframe of trending terms.
 #' @param topics list of topics.
-exec_classification <- function(tt, topics, n) {
+exec_classification <- function(tt, topics, it, n) {
   max_retry <- 3
   tryCatch(
     {
@@ -177,7 +177,7 @@ exec_classification <- function(tt, topics, n) {
       print(e)
 
       if (n <= max_retry) {
-        exec_classification(tt, topics, n + 1)
+        exec_classification(tt, topics, it, n + 1)
       }
     }
   )
@@ -194,22 +194,7 @@ start_time <- Sys.time()
 
 
 for (tt in tt_subsets) {
-  if (it < 45) {
-    it <- it + 1
-    next
-  }
-  tryCatch(
-    {
-      classification <- exec_classification(tt, topics, 1)
-    },
-    error = function(e) {
-      print_m(
-        sprintf("error in iteration %s", it),
-        e
-      )
-    }
-  )
-
+  classification <- exec_classification(tt, topics, it, 1)
   if (it == 1) {
     classification |>
       utils::write.table(
@@ -237,11 +222,12 @@ for (tt in tt_subsets) {
 }
 
 # Add row names and removes trailing whitespace.
-classified_terms |>
+read.csv(classified_terms_csv) |>
   mutate(
     across(
-      where(is.character), str_trim
-    )
+      where(is.character), stringr::str_trim
+    ),
+    topic = ifelse(match(topic, topics), topic, NA)
   ) |>
   utils::write.table(
     classified_terms_csv,

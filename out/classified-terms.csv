@@ -935,7 +935,7 @@
 "934","Paul Spencer","Denmark","Business & Finance"
 "935","Ticketmaster","Denmark","Business & Finance"
 "936","Sankthans","Denmark","Lifestyle"
-"937","كوريا الشمالية","Egypt","Political"
+"937","كوريا الشمالية","Egypt",NA
 "938","الزمالك","Egypt","Sports"
 "939","القنوات الناقله لمباراه مصر وغينيا بيساو","Egypt","Sports"
 "940","تريزيجيه","Egypt","Sports"
@@ -1002,13 +1002,13 @@
 "1001","نتيجة الصف الاول الثانوي","Egypt","Education"
 "1002","نتيجه الشهاده الاعداديه محافظه الغربيه","Egypt","Education"
 "1003","نتيجه الصف الثالث الاعدادي محافظه المنيا","Egypt","Education"
-"1004","صلاة العيد","Egypt","Religion"
-"1005","صلاة عيد الاضحى","Egypt","Religion"
-"1006","صلاه العيد","Egypt","Religion"
-"1007","صور عيد الاضحى","Egypt","Religion"
-"1008","موعد صلاة عيد الاضحى 2024","Egypt","Religion"
-"1009","موعد صلاه عيد الاضحى 2024","Egypt","Religion"
-"1010","يوم التروية","Egypt","Religion"
+"1004","صلاة العيد","Egypt",NA
+"1005","صلاة عيد الاضحى","Egypt",NA
+"1006","صلاه العيد","Egypt",NA
+"1007","صور عيد الاضحى","Egypt",NA
+"1008","موعد صلاة عيد الاضحى 2024","Egypt",NA
+"1009","موعد صلاه عيد الاضحى 2024","Egypt",NA
+"1010","يوم التروية","Egypt",NA
 "1011","Billie Eilish","Finland","Music"
 "1012","Bruce Springsteen","Finland","Music"
 "1013","C.Gambino","Finland","Music"
@@ -2022,7 +2022,7 @@
 "2017","Happy Father's Day 2024","Malaysia","Culture & Society"
 "2018","H5N2 avian influenza","Malaysia","Health & Medicine"
 "2019","Diesel price Malaysia","Malaysia","Economy"
-"2020","豊葦事事件","Japan","Crime"
+"2020","豊葦事事件","Japan",NA
 "2021","青い18きっぷ","Japan","Education"
 "2022","Berkshire Hathaway","Malaysia","Business & Finance"
 "2023","Indonesia","Malaysia","Travel & Tourism"
@@ -2459,7 +2459,7 @@
 "2454","Alan Hansen","Norway","Lifestyle"
 "2455","Malawi","Nigeria","Environment"
 "2456","Poland","Nigeria","Environment"
-"2457","Stella Ikwuegbu","Nigeria","Culture"
+"2457","Stella Ikwuegbu","Nigeria",NA
 "2458","Calafiori","Norway","Sports"
 "2459","Casper Ruud","Norway","Sports"
 "2460","Copa America","Norway","Sports"
@@ -2942,22 +2942,22 @@
 "2937","Inaltarea Domnului","Romania","Culture & Society"
 "2938","Pogorarea sfantului Duh","Romania","Culture & Society"
 "2939","Sanziene","Romania","Culture & Society"
-"2940","Louis Vuitton","Romania","Luxury"
+"2940","Louis Vuitton","Romania",NA
 "2941","Ozempic","Romania","Health & Medicine"
 "2942","Subiecte Evaluare nationala 2024","Romania","Education"
 "2943","Ziua invatatorului","Romania","Education"
 "2944","iOS 18","Romania","Science & Technology"
 "2945","iOS 18","Romania","Science & Technology"
-"2946","أنتوني فاووتشي","Saudi Arabia","Religion & Spirituality"
-"2947","دعاء لجعل الموت سهل","Saudi Arabia","Religion & Spirituality"
-"2948","افضل دعاء يوم عرفة","Saudi Arabia","Religion & Spirituality"
-"2949","ادعيه يوم عرفه","Saudi Arabia","Religion & Spirituality"
-"2950","الدعاء يوم عرفة","Saudi Arabia","Religion & Spirituality"
-"2951","الارحنتين","Saudi Arabia","Religion & Spirituality"
-"2952","الدوري المصري","Saudi Arabia","Religion & Spirituality"
-"2953","اسبانيا","Saudi Arabia","Religion & Spirituality"
-"2954","البرازيل","Saudi Arabia","Religion & Spirituality"
-"2955","البرتغال","Saudi Arabia","Religion & Spirituality"
+"2946","أنتوني فاووتشي","Saudi Arabia",NA
+"2947","دعاء لجعل الموت سهل","Saudi Arabia",NA
+"2948","افضل دعاء يوم عرفة","Saudi Arabia",NA
+"2949","ادعيه يوم عرفه","Saudi Arabia",NA
+"2950","الدعاء يوم عرفة","Saudi Arabia",NA
+"2951","الارحنتين","Saudi Arabia",NA
+"2952","الدوري المصري","Saudi Arabia",NA
+"2953","اسبانيا","Saudi Arabia",NA
+"2954","البرازيل","Saudi Arabia",NA
+"2955","البرتغال","Saudi Arabia",NA
 "2956","Wurzburg","Romania","Travel & Tourism"
 "2957","الزمالك","Saudi Arabia","Sports"
 "2958","المنتخب السعودي","Saudi Arabia","Sports"
@@ -3007,8 +3007,8 @@
 "3002","ديزني","Saudi Arabia","Entertainment"
 "3003","فيراري","Saudi Arabia","Entertainment"
 "3004","مسابقة","Saudi Arabia","Entertainment"
-"3005","توزيع الميزانية","Saudi Arabia","Statistics & Reports"
-"3006","اسهم ارامكو","Saudi Arabia","Statistics & Reports"
+"3005","توزيع الميزانية","Saudi Arabia",NA
+"3006","اسهم ارامكو","Saudi Arabia",NA
 "3007","سعر الدولار مقابل الجنيه","Saudi Arabia","Economy"
 "3008","الاحتباس الحراري","Saudi Arabia","Environment"
 "3009","المناخ","Saudi Arabia","Environment"
