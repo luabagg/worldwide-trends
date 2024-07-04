@@ -5,26 +5,14 @@
 #'
 #' ----- ----- ----- ----- :) ----- ----- ----- -----
 
-source("utils.r")
+source("utils/utils.r")
+source("utils/openai-api.r")
 
 get_requirements("./requirements.txt")
 dotenv::load_dot_env(".Renviron")
 
 
-# Retrieving grouped trends created in main.r
-#
-
-daily_top_terms_csv <- daily_top_terms_filename()
-print_m(
-  sprintf("Loading top terms %s...", daily_top_terms_csv)
-)
-
-if (!file.exists(daily_top_terms_csv)) {
-  stop("you must first generate the output file (see readme.md)")
-}
-
-
-# Defining the topics and trending terms
+# Defining the topics
 #
 
 topics <- c(
@@ -44,7 +32,21 @@ topics <- c(
   "Lifestyle"
 )
 
+
+# Retrieving grouped trends created in extract-dataset-bq.r
+#
+
 library(dplyr)
+library(stringr)
+
+daily_top_terms_csv <- daily_top_terms_file()
+print_m(
+  sprintf("Loading top terms %s...", daily_top_terms_csv)
+)
+
+if (!file.exists(daily_top_terms_csv)) {
+  stop("you must first generate the output file (see readme.md)")
+}
 
 # Parses the daily top terms to decrease number of rows.
 all_trending_terms <- read.csv(daily_top_terms_csv) |>
@@ -63,12 +65,9 @@ all_trending_terms <- read.csv(daily_top_terms_csv) |>
   ) |>
   as.data.frame()
 
-total_subsets <- ceiling(nrow(all_trending_terms) / 80)
 
-# Split the data frame in total_subsets to fit OpenAI's rate limit.
-tt_subsets <- split(
-  all_trending_terms, factor(sort(rank(row.names(all_trending_terms)) %% total_subsets))
-)
+# Classification functions
+#
 
 #' classify requests the terms classification.
 #'
@@ -177,24 +176,44 @@ exec_classification <- function(tt, topics, it, n) {
       print(e)
 
       if (n <= max_retry) {
-        exec_classification(tt, topics, it, n + 1)
+        return(
+          exec_classification(tt, topics, it, n + 1)
+        )
       }
+
+      return()
     }
   )
 
   return(classification)
 }
 
+
+# Splitting in subsets
+#
+
+terms_by_request <- 10
+total_subsets <- ceiling(nrow(all_trending_terms) / terms_by_request)
+
+# Split the data frame in total_subsets to fit OpenAI's rate limit.
+tt_subsets <- split(
+  all_trending_terms, factor(sort(rank(row.names(all_trending_terms)) %% total_subsets))
+)
+
+
 # Requesting OpenAI
 #
 
-classified_terms_csv <- classified_terms_filename()
+classified_terms_csv <- "out/classified-terms.csv"
 it <- 1
 start_time <- Sys.time()
 
-
 for (tt in tt_subsets) {
   classification <- exec_classification(tt, topics, it, 1)
+  if (is.null(classification)) {
+    next()
+  }
+
   if (it == 1) {
     classification |>
       utils::write.table(
@@ -221,7 +240,10 @@ for (tt in tt_subsets) {
   it <- it + 1
 }
 
-# Add row names and removes trailing whitespace.
+# Filtering response
+#
+
+# Adds row names and removes trailing whitespace.
 read.csv(classified_terms_csv) |>
   mutate(
     across(
@@ -238,3 +260,34 @@ print_m(
   sprintf("Analysis completed, time spent: %s seconds", round(Sys.time() - start_time)),
   sprintf("Output available at %s", classified_terms_csv)
 )
+
+
+# Merging dataframes
+#
+
+output <- classified_top_terms_file()
+print_m(
+  sprintf("Merging dataframes to output %s...", output)
+)
+
+complete_terms <- merge(
+  read.csv(daily_top_terms_csv),
+  read.csv(classified_terms_csv),
+  by = c("term", "country"),
+  all.x = TRUE
+) |>
+  group_by(
+    country, term, day, rank, repetitions
+  ) |>
+  summarise(
+    topic = first(topic)
+  ) |>
+  arrange(
+    country, day, rank
+  ) |>
+  utils::write.table(
+    output,
+    sep = ","
+  )
+
+print_m("All done!")

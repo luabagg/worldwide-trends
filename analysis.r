@@ -2,9 +2,9 @@ library(dplyr)
 library(tibble)
 library(scales)
 
-source("utils.r")
+source("utils/utils.r")
 
-output <- "out/daily-top-terms-classified.csv"
+output <- classified_top_terms_file()
 
 df <- read.csv(output) |>
   group_by(
@@ -29,34 +29,32 @@ df <- read.csv(output) |>
   as.data.frame() |>
   view()
 
-countries <- c("Brazil", "Portugal", "United Kingdom")
 
-# Removing the column "country" for visualization.
+pdf("reports/radar-countries-complete.pdf")
+
 chart_data <- df |>
   select(-country)
 rownames(chart_data) <- df$country
 
-
-pdf("out/analysis.pdf")
-
 df_scaled <- round(apply(chart_data, 2, scales::rescale), 2)
 df_scaled <- as.data.frame(df_scaled)
 head(df_scaled)
+
 col_max <- apply(df_scaled, 2, max)
 col_min <- apply(df_scaled, 2, min)
-# Calculate the average profile
+
 col_mean <- apply(df_scaled, 2, mean)
 col_sd <- apply(df_scaled, 2, sd)
-# Put together the summary of columns
+
 col_summary <- t(data.frame(Max = col_max, Min = col_min, Average = col_mean, Sd = col_sd))
 df_scaled2 <- as.data.frame(rbind(col_summary, df_scaled))
 head(df_scaled2)
 
+view(df_scaled2)
+
 opar <- par()
-# Define settings for plotting in a 3x4 grid, with appropriate margins:
 par(mfrow = c(3, 2), mar = rep(1, 4))
 
-# Produce a radar-chart for each student
 for (i in 5:nrow(df_scaled2)) {
   fmsb::radarchart(
     df_scaled2[c(1:3, i), ],
@@ -66,16 +64,14 @@ for (i in 5:nrow(df_scaled2)) {
     title = row.names(df_scaled2)[i]
   )
 }
-par <- par(opar)
 
-# Close the graphics device
+par(opar)
 dev.off()
 
-# png("out/comparing.png", width = 800, height = 600)
-pdf("out/comparing.pdf")
+png("reports/countries-comparison.png", width = 800, height = 600)
 par(mar = rep(1, 4))
 
-countries <- c("Brazil", "Portugal", "United Kingdom")
+countries <- c("Brazil", "Finland", "United Kingdom")
 comparing_df <- df |>
   filter(country %in% countries) |>
   select(-country)
@@ -103,17 +99,12 @@ comparing_df <- rbind(max_min_df, comparing_df)
 
 colors <- c("#00AFBB", "#E7B800", "#FC4E07")
 
-print(means)
 fmsb::radarchart(
   comparing_df,
   axistype = 1,
-  # Customize the polygon
   pcol = colors, pfcol = scales::alpha(colors, 0.5), plwd = 2, plty = 1,
-  # Customize the grid
   cglcol = "grey", cglty = 1, cglwd = 1,
-  # Customize the axis
   axislabcol = "grey",
-  # Variable labels
   vlcex = 1,
   caxislabels = seq(min_values[1], max_values[1], length.out = 5), title = "Comparing countries",
 )

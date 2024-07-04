@@ -5,7 +5,8 @@
 #'
 #' ----- ----- ----- ----- :) ----- ----- ----- -----
 
-source("utils.r")
+source("utils/utils.r")
+source("utils/big-query.r")
 
 get_requirements("./requirements.txt")
 dotenv::load_dot_env(".Renviron")
@@ -14,7 +15,7 @@ dotenv::load_dot_env(".Renviron")
 project_id <- Sys.getenv("GCLOUD_PROJECT_ID")
 project_name <- Sys.getenv("GCLOUD_PROJECT")
 dataset_name <- Sys.getenv("GCLOUD_DATASET")
-daily_top_terms_csv <- daily_top_terms_filename()
+daily_top_terms_csv <- daily_top_terms_file()
 
 print_m(
   sprintf("Your project ID: %s", project_id),

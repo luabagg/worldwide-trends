@@ -11,9 +11,11 @@
 #' As at 30 Jun 2024, the OpenAI's assistants API is not fully working.
 #' Vector stores are being saved with error.
 #'
+#' Please ignore this script.
+#'
 #'
 
-source("utils.r")
+source("utils/utils.r")
 
 get_requirements("./requirements.txt")
 dotenv::load_dot_env(".Renviron")
@@ -22,7 +24,7 @@ dotenv::load_dot_env(".Renviron")
 # Retrieves grouped trends created in main.r
 #
 
-daily_top_terms_csv <- daily_top_terms_filename()
+daily_top_terms_csv <- daily_top_terms_file()
 print_m(
   sprintf("Loading top terms %s...", daily_top_terms_csv)
 )
