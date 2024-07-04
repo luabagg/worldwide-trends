@@ -14,7 +14,7 @@ df <- read.csv(output) |>
     qty = n()
   ) |>
   arrange(
-    topic
+    country
   ) |>
   tidyr::pivot_wider(
     names_from = topic, values_from = qty
@@ -71,7 +71,7 @@ dev.off()
 png("reports/countries-comparison.png", width = 800, height = 600)
 par(mar = rep(1, 4))
 
-countries <- c("Brazil", "Finland", "United Kingdom")
+countries <- c("Brazil", "Canada", "New Zealand")
 comparing_df <- df |>
   filter(country %in% countries) |>
   select(-country)
@@ -97,7 +97,7 @@ max_min_df[2, ] <- min_values
 
 comparing_df <- rbind(max_min_df, comparing_df)
 
-colors <- c("#00AFBB", "#E7B800", "#FC4E07")
+colors <- c("#00AFBB", "#FC4E07", "#E7B800")
 
 fmsb::radarchart(
   comparing_df,
