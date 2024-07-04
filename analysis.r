@@ -1,8 +1,18 @@
+#' Worldwide Trends
+#'
+#' This script is responsible for analyzing the data.
+#'
+#' ----- ----- ----- ----- :) ----- ----- ----- -----
+
 library(dplyr)
 library(tibble)
 library(scales)
 
 source("utils/utils.r")
+
+
+# Retrieving the classified terms.
+#
 
 output <- classified_top_terms_file()
 
@@ -29,49 +39,78 @@ df <- read.csv(output) |>
   as.data.frame() |>
   view()
 
+opar <- par()
+
+# Plotting all countries statistics
+#
 
 pdf("reports/radar-countries-complete.pdf")
+
+title <- "Countries Trends Visualization \n (02/06 - 28/06)"
 
 chart_data <- df |>
   select(-country)
 rownames(chart_data) <- df$country
 
-df_scaled <- round(apply(chart_data, 2, scales::rescale), 2)
-df_scaled <- as.data.frame(df_scaled)
-head(df_scaled)
+df_scaled <- round(
+  apply(chart_data, 2, scales::rescale), 2
+) |>
+  as.data.frame()
 
+# Calculating statistics
 col_max <- apply(df_scaled, 2, max)
 col_min <- apply(df_scaled, 2, min)
-
 col_mean <- apply(df_scaled, 2, mean)
 col_sd <- apply(df_scaled, 2, sd)
 
-col_summary <- t(data.frame(Max = col_max, Min = col_min, Average = col_mean, Sd = col_sd))
-df_scaled2 <- as.data.frame(rbind(col_summary, df_scaled))
-head(df_scaled2)
-
-view(df_scaled2)
-
-opar <- par()
-par(mfrow = c(3, 2), mar = rep(1, 4))
-
-for (i in 5:nrow(df_scaled2)) {
-  fmsb::radarchart(
-    df_scaled2[c(1:3, i), ],
-    pfcol = c("#99999980", NA),
-    pcol = c(NA, 2), plty = 1, plwd = 1,
-    vlcex = 0.8,
-    title = row.names(df_scaled2)[i]
+col_summary <- t(
+  data.frame(
+    Max = col_max, Min = col_min, Average = col_mean, Sd = col_sd
   )
+)
+max_min_mean_pos <- 1:3
+statistics_cols_qty <- nrow(col_summary)
+
+df_scaled <- as.data.frame(
+  rbind(col_summary, df_scaled)
+) |> view()
+
+
+display_qty <- c(3, 2)
+par(mfrow = display_qty, mar = rep(1, 4))
+
+title_i <- prod(display_qty)
+for (i in (statistics_cols_qty + 1):nrow(df_scaled)) {
+  fmsb::radarchart(
+    df_scaled[c(max_min_mean_pos, i), ],
+    title = row.names(df_scaled)[i],
+    vlcex = 0.8,
+    pfcol = c("#99999980", NA),
+    pcol = c(NA, 2),
+    plty = 1,
+  )
+
+  if (title_i %% prod(display_qty) == 0) {
+    mtext(
+      title, side = 3, line = -2.3, cex = 0.8, outer = TRUE
+    )
+  }
+  title_i <- title_i + 1
 }
 
 par(opar)
 dev.off()
 
+
+# Plotting the PNG of countries comparison
+#
+
 png("reports/countries-comparison.png", width = 800, height = 600)
 par(mar = rep(1, 4))
 
 countries <- c("Brazil", "Canada", "New Zealand")
+colors <- c("#00AFBB", "#FC4E07", "#E7B800")
+
 comparing_df <- df |>
   filter(country %in% countries) |>
   select(-country)
@@ -97,16 +136,17 @@ max_min_df[2, ] <- min_values
 
 comparing_df <- rbind(max_min_df, comparing_df)
 
-colors <- c("#00AFBB", "#FC4E07", "#E7B800")
-
 fmsb::radarchart(
   comparing_df,
+  title = "Comparing countries (02/06 - 28/06)",
   axistype = 1,
-  pcol = colors, pfcol = scales::alpha(colors, 0.5), plwd = 2, plty = 1,
+  caxislabels = paste(seq(min_values[1], max_values[1], length.out = 5), "terms"),
+  vlcex = 1,
+  pcol = colors,
+  pfcol = scales::alpha(colors, 0.5),
+  plwd = 2, plty = 1,
   cglcol = "grey", cglty = 1, cglwd = 1,
   axislabcol = "grey",
-  vlcex = 1,
-  caxislabels = seq(min_values[1], max_values[1], length.out = 5), title = "Comparing countries",
 )
 par(mar = rep(0, 4))
 legend(
