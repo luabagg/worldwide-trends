@@ -92,7 +92,8 @@ for (i in (statistics_cols_qty + 1):nrow(df_scaled)) {
 
   if (title_i %% prod(display_qty) == 0) {
     mtext(
-      title, side = 3, line = -2.3, cex = 0.8, outer = TRUE
+      title,
+      side = 3, line = -2.3, cex = 0.7, col = "#505050", outer = TRUE
     )
   }
   title_i <- title_i + 1
