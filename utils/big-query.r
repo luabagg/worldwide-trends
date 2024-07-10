@@ -62,7 +62,7 @@ get_table <- function(con, table_name) {
   stop("table not found in the connection")
 }
 
-#' write_complete_csv queries the given table and outputs to a file.
+#' bq_table_to_csv queries the given table and outputs to a file.
 #'
 #' warning: the given table must have the following columns:
 #' - rank
@@ -71,7 +71,7 @@ get_table <- function(con, table_name) {
 #'
 #' @param table the table @see get_table.
 #' @param output the filename to output the info.
-write_complete_csv <- function(table, output) {
+bq_table_to_csv <- function(table, output) {
   one_month_ago <- get_months_range(1)
   table |>
     dplyr::select(

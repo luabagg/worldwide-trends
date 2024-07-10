@@ -72,7 +72,7 @@ get_daily_top_terms <- function(df) {
 top_terms_complete_csv <- "out/top-terms-complete.csv"
 if (!file.exists(top_terms_complete_csv)) {
   # If file doesn't exists, query the defined dataset and create csv.
-  write_complete_csv(
+  bq_table_to_csv(
     get_table(con, "international_top_terms"),
     top_terms_complete_csv
   )
@@ -92,7 +92,7 @@ worldwide_top_terms <- get_daily_top_terms(top_terms_complete_df)
 us_top_terms_complete_csv <- "out/us-top-terms-complete.csv"
 if (!file.exists(us_top_terms_complete_csv)) {
   # If file doesn't exists, query the defined dataset and create csv.
-  write_complete_csv(
+  bq_table_to_csv(
     get_table(con, "top_terms"),
     us_top_terms_complete_csv
   )
