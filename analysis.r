@@ -4,12 +4,14 @@
 #'
 #' ----- ----- ----- ----- :) ----- ----- ----- -----
 
+source("utils/utils.r")
+
+get_requirements("./requirements.txt")
+dotenv::load_dot_env(".Renviron")
+
 library(dplyr)
 library(tibble)
 library(scales)
-
-source("utils/utils.r")
-
 
 # Retrieving the classified terms.
 #

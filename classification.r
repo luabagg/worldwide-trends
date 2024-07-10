@@ -167,7 +167,9 @@ exec_classification <- function(tt, topics, it, n) {
   max_retry <- 3
   tryCatch(
     {
-      classification <- classify(tt, topics)
+      return(
+        classify(tt, topics)
+      )
     },
     error = function(e) {
       print_m(
@@ -184,8 +186,6 @@ exec_classification <- function(tt, topics, it, n) {
       return()
     }
   )
-
-  return(classification)
 }
 
 

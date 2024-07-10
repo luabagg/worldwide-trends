@@ -7,3 +7,6 @@ httr
 lubridate
 rjson
 stringr
+scales
+tibble
+tidyr
