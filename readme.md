@@ -34,6 +34,17 @@ This project analyzes data collected from the Google Trends public dataset using
 6. Checkout the reports at `/reports`.
 7. Open `maps/index.html` in a web browser to view the interactive map. [IN PROGRESS]
 
+## Results
+
+### Countries comparison
+
+![Countries Comparison](reports/countries-comparison.png)
+
+### Complete comparison
+
+You can view the complete comparison in the [PDF report](reports/radar-countries-complete.pdf).
+
+
 ## License
 
 This project is licensed under the MIT License.
